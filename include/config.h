@@ -1,38 +1,39 @@
-#include "servo.h"
+#include "motor.h"
 
-#define NUM_SERVOS 3
+#define NUM_MOTORS 3
 
-pid_config_t pid_config = {
-    .kp=1,
-    .ki=0,
-    .kd=0,
-    .min_i=INT32_MIN,
-    .max_i=INT32_MAX,
-    .min_out=INT32_MIN,
-    .max_out=INT32_MAX,
-    .reset_err_on_cross=false
-};
-
-servo_t servos[NUM_SERVOS] = {
-    {(motor_t){
+motor_t motors[NUM_MOTORS] = {
+    {
         .enc_a=0,
         .enc_b=1,
         .pwm=2,
         .in_1=3,
-        .in_2=4
-    }, (pid_t){.config=&pid_config}},
-    {(motor_t){
+        .in_2=4,
+
+        .kp = 1,
+        .ki = 0,
+        .kd = 0
+    },
+    {
         .enc_a=5,
         .enc_b=6,
         .pwm=7,
         .in_1=8,
-        .in_2=9
-    }, (pid_t){.config=&pid_config}},
-    {(motor_t){
+        .in_2=9,
+
+        .kp = 1,
+        .ki = 0,
+        .kd = 0
+    },
+    {
         .enc_a=10,
         .enc_b=11,
         .pwm=12,
         .in_1=13,
-        .in_2=14
-    }, (pid_t){.config=&pid_config}},
+        .in_2=14,
+
+        .kp = 1,
+        .ki = 0,
+        .kd = 0
+    },
 };

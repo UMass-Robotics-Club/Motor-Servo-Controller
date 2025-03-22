@@ -1,21 +1,56 @@
+# Generated Cmake Pico project file
+
 cmake_minimum_required(VERSION 3.13)
 
-    # initialize the SDK based on PICO_SDK_PATH
-    # note: this must happen before project()
-    include(pico_sdk_import.cmake)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-    project(motor_firmware)
+# Initialise pico_sdk from installed location
+# (note this can come from environment, CMake cache etc)
 
-    # initialize the Raspberry Pi Pico SDK
-    pico_sdk_init()
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.1.1)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.1.1)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+set(PICO_BOARD pico CACHE STRING "Board type")
 
-    file(GLOB SRCS ./src/*.c)
-    add_executable(main ${SRCS})
+# Pull in Raspberry Pi Pico SDK (must be before project)
+include(pico_sdk_import.cmake)
 
-    target_include_directories(main PUBLIC ./include)
+project(main C CXX ASM)
 
-    # Add pico_stdlib library which aggregates commonly used features
-    target_link_libraries(main pico_stdlib hardware_pwm)
+# Initialise the Raspberry Pi Pico SDK
+pico_sdk_init()
 
-    # create map/bin/hex/uf2 file in addition to ELF.
-    pico_add_extra_outputs(main)
+# Add executable. Default name is the project name, version 0.1
+
+file(GLOB SRCS ./src/*.c)
+add_executable(main ${SRCS})
+
+pico_set_program_name(main "Motor-Servo-Controller")
+pico_set_program_version(main "0.1")
+
+# Modify the below lines to enable/disable output over UART/USB
+pico_enable_stdio_usb(main 1)
+pico_enable_stdio_uart(main 0)
+
+
+# Add the standard library to the build
+target_link_libraries(main pico_stdlib hardware_pwm)
+
+# Add the standard include files to the build
+target_include_directories(main PUBLIC ./include)
+
+pico_add_extra_outputs(main)
+
